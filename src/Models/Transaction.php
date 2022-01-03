@@ -2,6 +2,7 @@
 
 namespace Bavix\Wallet\Models;
 
+use Kyslik\ColumnSortable\Sortable;
 use function array_merge;
 use Bavix\Wallet\Interfaces\Mathable;
 use Bavix\Wallet\Interfaces\Wallet;
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Transaction extends Model
 {
+    use Sortable;
     public const TYPE_DEPOSIT = 'deposit';
     public const TYPE_WITHDRAW = 'withdraw';
 
@@ -99,11 +101,13 @@ class Transaction extends Model
      */
     public function getAmountFloatAttribute()
     {
+
+        $decimalPlacesValue = app(WalletService::class)->decimalPlacesValue($this->wallet);
         $decimalPlaces = app(WalletService::class)
             ->decimalPlaces($this->wallet);
 
         return app(Mathable::class)
-            ->div($this->amount, $decimalPlaces);
+            ->div($this->amount, $decimalPlaces, $decimalPlacesValue);
     }
 
     /**
