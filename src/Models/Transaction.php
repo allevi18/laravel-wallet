@@ -57,6 +57,15 @@ class Transaction extends Model
         'meta' => 'json',
     ];
 
+    public $sortable = [
+        'id',
+        'type',
+        'amount',
+        'created_at'
+    ];
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -122,5 +131,23 @@ class Transaction extends Model
             ->decimalPlaces($this->wallet);
 
         $this->amount = $math->round($math->mul($amount, $decimalPlaces));
+    }
+
+    public function sourceSortable($query, $direction)
+    {
+//        return $query->orderBy('meta->source', $direction);
+        return $query
+            ->orderByRaw("FIELD(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.source')) ,'purchase', 'cancel', 'granted', 'order', 'penalty', 'transfer', 'payout') $direction")
+            ->orderBy('id', $direction);
+    }
+
+    public function orderidSortable($query, $direction)
+    {
+        return $query->orderByRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.order_id')) AS DECIMAL) $direction");
+    }
+
+    public function payoutidSortable($query, $direction)
+    {
+        return $query->orderByRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.payout_id')) AS DECIMAL) $direction");
     }
 }
