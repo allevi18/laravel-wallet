@@ -3,6 +3,7 @@
 namespace Bavix\Wallet\Models;
 
 use Kyslik\ColumnSortable\Sortable;
+use Nicolaslopezj\Searchable\SearchableTrait;
 use function array_merge;
 use Bavix\Wallet\Interfaces\Mathable;
 use Bavix\Wallet\Interfaces\Wallet;
@@ -31,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Transaction extends Model
 {
     use Sortable;
+    use SearchableTrait;
+
     public const TYPE_DEPOSIT = 'deposit';
     public const TYPE_WITHDRAW = 'withdraw';
 
@@ -62,6 +65,18 @@ class Transaction extends Model
         'type',
         'amount',
         'created_at'
+    ];
+
+    protected $searchable = [
+        'columns' => [
+            'transactions.uuid' => 10,
+            'users.email' => 10,
+            'users.username' => 10,
+        ],
+        'joins' => [
+            'users' => ['transactions.payable_id','users.id'],
+            //'sellers' => ['listings.user_id','listings.id'],
+        ],
     ];
 
 
