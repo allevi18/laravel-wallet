@@ -151,6 +151,16 @@ class Transaction extends Model
         return $query->orderByRaw("CAST(JSON_UNQUOTE(JSON_EXTRACT(meta, '$.payout_id')) AS DECIMAL) $direction");
     }
 
+
+    public function scopeReferenceAccess($query, $user)
+    {
+
+        if ($user->can(config('laravel-tickets.permissions.all-ticket')))
+            return $query;
+
+        return $query->where('payable_id', $user->id);
+    }
+
     function hasReferenceAccess() : bool {
         return (request()->user()->id == $this->payable_id);
     }
