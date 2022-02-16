@@ -37,6 +37,7 @@ class Transaction extends Model
     use Sortable;
     use SearchableTrait;
     use HasTicketReference;
+    use \Spiritix\LadaCache\Database\LadaCacheTrait;
     public const TYPE_DEPOSIT = 'deposit';
     public const TYPE_WITHDRAW = 'withdraw';
 
