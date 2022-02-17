@@ -1,5 +1,5 @@
 {
-  "name": "bavix/laravel-wallet",
+  "name": "allevi18/laravel-wallet",
   "description": "Easy work with virtual wallet.",
   "keywords": [
     "laravel",
@@ -13,7 +13,7 @@
     "payments"
   ],
   "minimum-stability": "stable",
-  "homepage": "https://bavix.github.io/laravel-wallet/",
+  "homepage": "https://github.com/allevi18/laravel-wallet/",
   "license": "MIT",
   "authors": [
     {
